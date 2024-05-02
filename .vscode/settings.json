@@ -2,6 +2,7 @@
     "files.associations": {
         "format": "cpp",
         "iostream": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "vector": "cpp"
     }
 }

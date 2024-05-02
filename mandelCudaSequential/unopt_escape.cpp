@@ -25,11 +25,10 @@
 
 #include <vector>
 #include <iostream>
+#include <fstream>
 
-#include "koolplot.h"
-
-#define X 128
-#define Y 72
+#define X 1280
+#define Y 720
 
 struct Point {
     int x;
@@ -45,17 +44,22 @@ int main () {
 
     unoptimized_Escape(&mandelSet);
 
+    // Write data out to a file
 
-    // Use GNUPlot somehow to plot this
-    Plotdata x, y;
+    // FILE *file = _popen("MandelSetOut.txt", "w");
+    std::ofstream file ("MandelSetOut.txt");
+
+    // fprintf(file, "# X\tY");
+    file << "# X\tY\tIteration" << std::endl;
 
     for (int i = 0; i < mandelSet.size(); i++) {
-        x << mandelSet.at(i).x;
-        y << mandelSet.at(i).y;
+        // fprintf(file, "%d\t%d\n", mandelSet.at(i).x, mandelSet.at(i).y);
+        file << mandelSet.at(i).x << "\t" << mandelSet.at(i).y << "\t" << mandelSet.at(i).iteration << std::endl;
     }
 
-    plot(x, y);
-   
+    // _pclose(file);   
+    file.close();
+
     return 0;
 }
 
