@@ -26,7 +26,7 @@
 #include <vector>
 #include <iostream>
 
-// using namespace std;
+#include "koolplot.h"
 
 #define X 128
 #define Y 72
@@ -37,15 +37,25 @@ struct Point {
     int iteration;
 };
 
+void unoptimized_Escape(std::vector<struct Point> *set);
+
 int main () {
 
     std::vector <struct Point> mandelSet;
 
     unoptimized_Escape(&mandelSet);
 
+
     // Use GNUPlot somehow to plot this
+    Plotdata x, y;
 
+    for (int i = 0; i < mandelSet.size(); i++) {
+        x << mandelSet.at(i).x;
+        y << mandelSet.at(i).y;
+    }
 
+    plot(x, y);
+   
     return 0;
 }
 
