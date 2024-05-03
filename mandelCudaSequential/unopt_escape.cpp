@@ -45,19 +45,15 @@ int main () {
     unoptimized_Escape(&mandelSet);
 
     // Write data out to a file
-
-    // FILE *file = _popen("MandelSetOut.txt", "w");
-    std::ofstream file ("MandelSetOut.txt");
+    std::ofstream file ("MandelSetOut.csv");
 
     // fprintf(file, "# X\tY");
-    file << "# X\tY\tIteration" << std::endl;
+    file << "X,Y,Iteration" << std::endl;
 
     for (int i = 0; i < mandelSet.size(); i++) {
-        // fprintf(file, "%d\t%d\n", mandelSet.at(i).x, mandelSet.at(i).y);
-        file << mandelSet.at(i).x << "\t" << mandelSet.at(i).y << "\t" << mandelSet.at(i).iteration << std::endl;
+        file << mandelSet.at(i).x << "," << mandelSet.at(i).y << "," << mandelSet.at(i).iteration << std::endl;
     }
 
-    // _pclose(file);   
     file.close();
 
     return 0;
