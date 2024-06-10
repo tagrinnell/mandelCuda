@@ -27,8 +27,8 @@
 #include <iostream>
 #include <fstream>
 
-#define X 1280.0
-#define Y 720.0
+#define X 1920.0
+#define Y 1080.0
 
 struct Point {
     int x;
@@ -66,8 +66,8 @@ void unoptimized_Escape(std::vector<struct Point> *set) {
     for (int i = 0; i < X; i++) {
         for (int j = 0; j < Y; j++) {
 
-            float x0 = i / X - 2.0;
-            float y0 = j / Y - 1.12;
+            float x0 = i / X * 2.47 - 2;
+            float y0 = j / Y * 2.24- 1.12;
             float x = 0.0;
             float y = 0.0;
 
