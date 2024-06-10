@@ -20,8 +20,8 @@
 #include <iostream>
 #include <fstream>
 
-#define X 1280
-#define Y 720
+#define X 128.0
+#define Y 72.0
 
 struct Point {
     int x;
@@ -67,8 +67,8 @@ int main () {
 void optimized_Escape(std::vector<struct Point> *set) {
     for (int i = 0; i < X; i++) {
         for (int j = 0; j < Y; j++) {
-            float x0 = i / 2.47 - 2.0;
-            float y0 = j / 2.24 - 1.12;
+            float x0 = i / X - 2.0;
+            float y0 = j / Y - 1.12;
             
             float x2 = 0;
             float y2 = 0;
