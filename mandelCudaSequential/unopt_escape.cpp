@@ -26,9 +26,12 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <chrono>
 
-#define X 1920.0
-#define Y 1080.0
+#define X 192.0
+#define Y 108.0
+
+long int numIterations;
 
 struct Point {
     int x;
@@ -42,10 +45,17 @@ int main () {
 
     std::vector <struct Point> mandelSet;
 
+    numIterations = 0;
+
+    // auto start = std::chrono::steady_clock::now();
+
     unoptimized_Escape(&mandelSet);
+
+    // auto tEnd = (std::chrono::steady_clock::now() - start) / CLOCKS_PER_SEC;
 
     // Write data out to a file
     std::ofstream file ("MandelSetOut.csv");
+    std::ofstream timing ("timing_unopt.txt");
 
     // fprintf(file, "# X\tY");
     file << "X,Y,Iteration" << std::endl;
@@ -55,6 +65,10 @@ int main () {
     }
 
     file.close();
+
+    // timing << "# Iterations " << numIterations << " in " << std::chrono::duration_cast <std::chrono::milliseconds> (tEnd).count() << " ms" << std::endl;
+
+    timing.close();
 
     return 0;
 }
@@ -85,7 +99,9 @@ void unoptimized_Escape(std::vector<struct Point> *set) {
             struct Point newPoint = {i, j, iteration};
             set->push_back(newPoint);
             
-
+            numIterations++;
         }
+
+        numIterations++;
     }
 }
