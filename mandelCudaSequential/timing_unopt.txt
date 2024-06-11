@@ -1,0 +1,2 @@
+207379200 Iterations in 312266ms using params:
+ X = 19200, Y = 10800
