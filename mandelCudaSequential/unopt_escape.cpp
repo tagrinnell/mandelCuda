@@ -28,8 +28,8 @@
 #include <fstream>
 #include <chrono>
 
-#define X 19200.0
-#define Y 10800.0
+#define X 192
+#define Y 108
 
 long int numIterations;
 
@@ -37,6 +37,8 @@ struct Point {
     int x;
     int y;
     int iteration;
+    int sizeX;
+    int sizeY;
 };
 
 void unoptimized_Escape(std::vector<struct Point> *set);
@@ -57,10 +59,15 @@ int main () {
     std::ofstream file ("MandelSetOut.csv");
     std::ofstream timing ("timing_unopt.txt");
 
-    // fprintf(file, "# X\tY");
-    file << "X,Y,Iteration" << std::endl;
+    file << "X,Y,Iteration,sizeX,sizeY" << std::endl;
 
     for (int i = 0; i < mandelSet.size(); i++) {
+        if (i == 0) {
+            file << mandelSet.at(i).x << "," << mandelSet.at(i).y << "," << mandelSet.at(i).iteration 
+                << mandelSet.at(i).sizeX << ","
+                << mandelSet.at(i).sizeY << "," << std::endl;
+        }
+
         file << mandelSet.at(i).x << "," << mandelSet.at(i).y << "," << mandelSet.at(i).iteration << std::endl;
     }
 
@@ -79,11 +86,12 @@ int main () {
  * Mandelbrot Calculation using unoptimized Escape 
 **/
 void unoptimized_Escape(std::vector<struct Point> *set) {
+
     for (int i = 0; i < X; i++) {
         for (int j = 0; j < Y; j++) {
 
-            float x0 = i / X * 2.47 - 2;
-            float y0 = j / Y * 2.24- 1.12;
+            float x0 = i / (double) X * 2.47 - 2;
+            float y0 = j / (double) Y * 2.24- 1.12;
             float x = 0.0;
             float y = 0.0;
 
@@ -98,7 +106,15 @@ void unoptimized_Escape(std::vector<struct Point> *set) {
                 iteration++;
             }
 
-            struct Point newPoint = {i, j, iteration};
+            struct Point newPoint;
+
+            // Include image size params in first point
+            if (i != 0 || j != 0) {
+                newPoint = {i, j, iteration, 0, 0};
+            } else {
+                newPoint = {i, j, iteration, X, Y};
+            }
+            
             set->push_back(newPoint);
             
             numIterations++;

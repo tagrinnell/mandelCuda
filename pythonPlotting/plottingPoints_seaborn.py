@@ -1,3 +1,9 @@
+# 
+#   Plotting points from csv using pandas dataframes + seaborn scatterplot for Mandlebrot Set. 
+#   
+#   Author: Tasman Grinnell
+#
+
 import seaborn
 import pandas
 import matplotlib.pyplot as plt
