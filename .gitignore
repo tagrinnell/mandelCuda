@@ -4,3 +4,16 @@
 **/*.ilk
 **/*.pdb
 **/*.csv
+**/*.vsidx
+**/*.suo
+**/*.db
+**/*.ipch
+**/*.deps
+**/*.cache
+**/*.recipe
+**/*.log
+**/*.tlog
+**/*.lastbuildstate
+**/*.exp
+**/*.lib
+**/*.

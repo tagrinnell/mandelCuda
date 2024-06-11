@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4352A0-0A5F-4C78-A2D3-841D4E9E92B9}|mandelParallel\\mandelParallel.vcxproj|C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{EA4352A0-0A5F-4C78-A2D3-841D4E9E92B9}|mandelParallel\\mandelParallel.vcxproj|solutionrelative:mandelParallel\\kernel.cu||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA4352A0-0A5F-4C78-A2D3-841D4E9E92B9}|mandelParallel\\mandelParallel.vcxproj|C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\2222.cu||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{EA4352A0-0A5F-4C78-A2D3-841D4E9E92B9}|mandelParallel\\mandelParallel.vcxproj|solutionrelative:mandelParallel\\2222.cu||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "kernel.cu",
+              "DocumentMoniker": "C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu",
+              "RelativeDocumentMoniker": "mandelParallel\\kernel.cu",
+              "ToolTip": "C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu",
+              "RelativeToolTip": "mandelParallel\\kernel.cu",
+              "ViewState": "AQIAABwAAAAAAAAAAAAswCoAAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-06-11T21:23:25.946Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "2222.cu",
+              "DocumentMoniker": "C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\2222.cu",
+              "RelativeDocumentMoniker": "mandelParallel\\2222.cu",
+              "ToolTip": "C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\2222.cu",
+              "RelativeToolTip": "mandelParallel\\2222.cu",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-06-11T21:21:26.056Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
