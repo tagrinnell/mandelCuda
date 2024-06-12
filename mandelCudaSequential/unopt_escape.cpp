@@ -28,8 +28,10 @@
 #include <fstream>
 #include <chrono>
 
-#define X 192
-#define Y 108
+#define X 1920
+#define Y 1080
+
+#define max_iteration 5000
 
 long int numIterations;
 
@@ -63,12 +65,12 @@ int main () {
 
     for (int i = 0; i < mandelSet.size(); i++) {
         if (i == 0) {
-            file << mandelSet.at(i).x << "," << mandelSet.at(i).y << "," << mandelSet.at(i).iteration 
+            file << mandelSet.at(i).x << "," << mandelSet.at(i).y << "," << mandelSet.at(i).iteration << ","
                 << mandelSet.at(i).sizeX << ","
-                << mandelSet.at(i).sizeY << "," << std::endl;
+                << mandelSet.at(i).sizeY  << std::endl;
         }
 
-        file << mandelSet.at(i).x << "," << mandelSet.at(i).y << "," << mandelSet.at(i).iteration << std::endl;
+        file << mandelSet.at(i).x << "," << mandelSet.at(i).y << "," << mandelSet.at(i).iteration << ",0,0" << std::endl;
     }
 
     file.close();
@@ -87,8 +89,8 @@ int main () {
 **/
 void unoptimized_Escape(std::vector<struct Point> *set) {
 
-    for (int i = 0; i < X; i++) {
-        for (int j = 0; j < Y; j++) {
+    for (int i = 0; i < X; i += .5) {
+        for (int j = 0; j < Y; j += .5) {
 
             float x0 = i / (double) X * 2.47 - 2;
             float y0 = j / (double) Y * 2.24- 1.12;
@@ -96,7 +98,6 @@ void unoptimized_Escape(std::vector<struct Point> *set) {
             float y = 0.0;
 
             int iteration = 0;
-            int max_iteration = 1000;
 
             while (x * x + y * y <= (2 * 2) && iteration < max_iteration) {
                 float xtemp = x * x - y * y + x0;
