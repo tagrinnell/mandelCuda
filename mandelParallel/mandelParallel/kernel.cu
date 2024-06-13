@@ -15,11 +15,11 @@
 #define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
 #endif
 
-#define X 1920
-#define Y 1080
+constexpr int X = 1920;
+constexpr int Y = 1080;
 
-#define numBlocks 16 
-#define numThreads 16 
+constexpr int numBlocks = 16;
+constexpr int numThreads = 16;
 
 struct Point {
     int x;
@@ -31,7 +31,7 @@ struct Point {
 
 cudaError_t mandelBrotCalc(struct Point* pointArray, int* numIterations, unsigned long size);
 
-__global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
+__global__ void computeSet(struct Point* returnPointArr, int* numIterations) {   
     int iterations = 0;
 
     for (int i = X / threadIdx.x; i < X && i < X / (threadIdx.x + 1); i++) {
@@ -55,7 +55,7 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
 
             struct Point newPoint = { i, j, iteration, 0, 0 };
 
-            returnPointArr[];
+            returnPointArr[(X / i) + (Y % j)] = newPoint;
 
             iterations++;
         }
@@ -63,7 +63,7 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
         iterations++;
     }
 
-    numIterations[threadIdx.x / numThreads + threadIdx.y % 16] = iterations;
+    numIterations[threadIdx.x / numThreads + threadIdx.y % numBlocks] = iterations;
 }
 
 /*
@@ -73,18 +73,24 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
 */
 int main()
 {
-    struct Point pointArray[X * Y];
+    std::cout.setf(std::ios_base::unitbuf);
+
+    struct Point *pointArray = new struct Point[X * Y];
     
-    int* numIterations = (int*) malloc(sizeof(int) * numThreads * numBlocks);
+    int* numIterations = new int[numThreads * numBlocks];
+
+    std::cout << "Beginning Calculation" << std::endl;
 
     // Add vectors in parallel.
     cudaError_t cudaStatus = mandelBrotCalc(pointArray, numIterations, (unsigned long) X * Y );
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "addWithCuda failed!");
+        fprintf(stderr, "mandelBrotCalc failed!");
         return 1;
     }
 
-    std::ofstream file("MandelSetOut_Parallel.csv");
+    std::cout << "Ending Calculation successfully, Beginning file output" << std::endl;
+
+    std::ofstream file("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs");
 
     file << "X,Y,Iteration,sizeX,sizeY" << std::endl;
 
@@ -99,8 +105,7 @@ int main()
     }
 
     // Output results
-
-    
+    std::cout << "Ending file output" << std::endl;
 
     // cudaDeviceReset must be called before exiting in order for profiling and
     // tracing tools such as Nsight and Visual Profiler to show complete traces.
@@ -114,7 +119,7 @@ int main()
 }
 
 // Helper function for using CUDA to calculate mandelBrot set in parallel.
-cudaError_t mandelBrotCalc (struct Point pointArray[], int* numIterations, unsigned long size)
+cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsigned long size)
 {
     struct Point *dev_points = 0;
     int* dev_iterations = 0;
@@ -141,7 +146,7 @@ cudaError_t mandelBrotCalc (struct Point pointArray[], int* numIterations, unsig
 
     // Launch a kernel on the GPU with 16 threads for each element.
     // Num blocks, numThreads
-    CUDA_KERNEL (16, 16) computeSet (dev_points, dev_iterations);
+    computeSet CUDA_KERNEL (numBlocks, numThreads)  (dev_points, dev_iterations);
 
     // Check for any errors launching the kernel
     cudaStatus = cudaGetLastError();
@@ -159,15 +164,15 @@ cudaError_t mandelBrotCalc (struct Point pointArray[], int* numIterations, unsig
     }
 
     // Copy output vector from GPU buffer to host memory.
-    cudaStatus = cudaMemcpy(&pointArray, dev_points, size * sizeof(struct Point), cudaMemcpyDeviceToHost);
+    cudaStatus = cudaMemcpy(pointArray, dev_points, size * sizeof(struct Point), cudaMemcpyDeviceToHost);
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy failed!");
+        fprintf(stderr, "cudaMemcpy points failed!");
         goto Error;
     }
 
-    cudaStatus = cudaMemcpy(&numIterations, dev_iterations, size * sizeof(struct Point), cudaMemcpyDeviceToHost);
+    cudaStatus = cudaMemcpy(numIterations, dev_iterations, numBlocks * numThreads * sizeof(int), cudaMemcpyDeviceToHost);
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy failed!");
+        fprintf(stderr, "cudaMemcpy iterations failed!");
         goto Error;
     }
 

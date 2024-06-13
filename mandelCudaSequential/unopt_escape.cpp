@@ -58,8 +58,8 @@ int main () {
     auto tEnd = std::chrono::high_resolution_clock::now() ;
 
     // Write data out to a file
-    std::ofstream file ("MandelSetOut.csv");
-    std::ofstream timing ("timing_unopt.txt");
+    std::ofstream file ("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs\\MandelSetOut.csv");
+    std::ofstream timing ("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\TimingOutputs\\timing_unopt.txt");
 
     file << "X,Y,Iteration,sizeX,sizeY" << std::endl;
 
