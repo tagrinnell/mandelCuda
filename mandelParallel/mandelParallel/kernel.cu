@@ -18,6 +18,9 @@
 constexpr int X = 1920;
 constexpr int Y = 1080;
 
+__device__ int xParam = X;
+__device__ int yParam = Y;
+
 constexpr int numBlocks = 16;
 constexpr int numThreads = 16;
 
@@ -90,7 +93,7 @@ int main()
 
     std::cout << "Ending Calculation successfully, Beginning file output" << std::endl;
 
-    std::ofstream file("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs");
+    std::ofstream file("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs\\MandelSetOut_Parallel.csv");
 
     file << "X,Y,Iteration,sizeX,sizeY" << std::endl;
 
@@ -146,6 +149,23 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
 
     // Launch a kernel on the GPU with 16 threads for each element.
     // Num blocks, numThreads
+    /*
+        Notes:
+        blockDim.x,y,z gives the number of threads in a block, in the particular direction
+        gridDim.x,y,z gives the number of blocks in a grid, in the particular direction
+        blockDim.x * gridDim.x gives the number of threads in a grid (in the x direction, in this case)
+
+    */
+    
+    // Use Grid Dim to define grid paramters
+    // In kernel, use the block Id and the x, y thread indices to find which section of the 
+    // Array the thread should run over
+
+
+
+
+
+
     computeSet CUDA_KERNEL (numBlocks, numThreads)  (dev_points, dev_iterations);
 
     // Check for any errors launching the kernel
