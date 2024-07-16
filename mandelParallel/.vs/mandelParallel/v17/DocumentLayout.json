@@ -1,14 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\",
+  "WorkspaceRootPath": "C:\\Users\\Devil\\Desktop\\Random Docs\\CudaProgramming\\mandelCuda\\mandelParallel\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EA4352A0-0A5F-4C78-A2D3-841D4E9E92B9}|mandelParallel\\mandelParallel.vcxproj|C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{EA4352A0-0A5F-4C78-A2D3-841D4E9E92B9}|mandelParallel\\mandelParallel.vcxproj|solutionrelative:mandelParallel\\kernel.cu||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EA4352A0-0A5F-4C78-A2D3-841D4E9E92B9}|mandelParallel\\mandelParallel.vcxproj|C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\2222.cu||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{EA4352A0-0A5F-4C78-A2D3-841D4E9E92B9}|mandelParallel\\mandelParallel.vcxproj|solutionrelative:mandelParallel\\2222.cu||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Devil\\Desktop\\Random Docs\\CudaProgramming\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:mandelParallel\\kernel.cu||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,16 +14,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "kernel.cu",
-              "DocumentMoniker": "C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu",
+              "DocumentMoniker": "C:\\Users\\Devil\\Desktop\\Random Docs\\CudaProgramming\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu",
               "RelativeDocumentMoniker": "mandelParallel\\kernel.cu",
-              "ToolTip": "C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu",
+              "ToolTip": "C:\\Users\\Devil\\Desktop\\Random Docs\\CudaProgramming\\mandelCuda\\mandelParallel\\mandelParallel\\kernel.cu",
               "RelativeToolTip": "mandelParallel\\kernel.cu",
+<<<<<<< HEAD
               "ViewState": "AQIAAHgAAAAAAAAAAAAAAJwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-06-11T21:23:25.946Z",
@@ -44,6 +45,12 @@
               "ViewState": "AQIAAF0AAAAAAAAAAAAAAGEAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-06-11T21:21:26.056Z"
+=======
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAADYAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "0001-01-01T06:00:00Z",
+              "EditorCaption": ""
+>>>>>>> be201b200fdfb739c505a6c1ef528c5deb31a464
             }
           ]
         }

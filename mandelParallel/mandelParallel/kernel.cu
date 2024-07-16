@@ -34,21 +34,56 @@ struct Point {
 
 cudaError_t mandelBrotCalc(struct Point* pointArray, int* numIterations, unsigned long size);
 
-__global__ void computeSet(struct Point* returnPointArr, int* numIterations) {   
+__global__ void computeSet(struct Point* returnPointArr, int* numIterations, const int* X, const int* Y, const int* numThreads) {   
     int iterations = 0;
 
-    for (int i = X / threadIdx.x; i < X && i < X / (threadIdx.x + 1); i++) {
-        for (int j = Y / threadIdx.y; j < Y && j < Y / (threadIdx.y + 1); j++) {
+    int xStart = 0;
+    int yStart = 0;
 
-            float x0 = i / (double)X * 2.47 - 2;
-            float y0 = j / (double)Y * 2.24 - 1.12;
+    int xEnd = 0;
+    int yEnd = 0;
+
+    if (threadIdx.x == 0) 
+    {
+        xStart = 0;
+    }
+    else {
+
+    }
+
+    if (threadIdx.y == 0) 
+    {
+        yStart = 0;
+    }
+    else
+    {
+
+    }
+
+    if (threadIdx.x * threadIdx.y == *numThreads) 
+    {
+        xEnd = *X;
+        yEnd = *Y;
+    }
+    else {
+        xEnd = 
+    }
+
+    for (int i = xStart; i < xEnd; i++) 
+    {
+        for (int j = yStart; j < yEnd; j++) 
+        {
+
+            float x0 = i / (*X * 2.47) - 2;
+            float y0 = j / (*Y * 2.24) - 1.12;
             float x = 0.0;
             float y = 0.0;
 
             int iteration = 0;
             int max_iteration = 1000;
 
-            while (x * x + y * y <= (2 * 2) && iteration < max_iteration) {
+            while (x * x + y * y <= (2 * 2) && iteration < max_iteration) 
+            {
                 float xtemp = x * x - y * y + x0;
                 y = 2 * x * y + y0;
                 x = xtemp;
@@ -58,7 +93,7 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
 
             struct Point newPoint = { i, j, iteration, 0, 0 };
 
-            returnPointArr[(X / i) + (Y % j)] = newPoint;
+            returnPointArr[(*X / i) + (*Y % j)] = newPoint;
 
             iterations++;
         }
@@ -76,6 +111,17 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
 */
 int main()
 {
+    // For Checking Devices in System ( Debugging mainly )
+    int nDevices;
+
+    cudaGetDeviceCount(&nDevices);
+    for (int i = 0; i < nDevices; i++) {
+        cudaDeviceProp prop;
+        cudaGetDeviceProperties(&prop, i);
+        std::cout << "Device Number: " << i << std::endl;
+        std::cout << "  Device name: " << prop.name << std::endl;
+    }
+
     std::cout.setf(std::ios_base::unitbuf);
 
     struct Point *pointArray = new struct Point[X * Y];
@@ -92,8 +138,13 @@ int main()
     }
 
     std::cout << "Ending Calculation successfully, Beginning file output" << std::endl;
-
+    
+    // For Desktop
     std::ofstream file("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs\\MandelSetOut_Parallel.csv");
+    
+
+    // For Laptop
+    // std::ofstream file("C:\\Users\\Devil\\Desktop\\Random Docs\\CudaProgramming\\mandelCuda\\CSVOutputs\\mandelParallel.csv");
 
     file << "X,Y,Iteration,sizeX,sizeY" << std::endl;
 
@@ -104,7 +155,7 @@ int main()
                 << Y << "," << std::endl;
         }
 
-        file << pointArray[i].x << "," << pointArray[i].y << "," << pointArray[i].iteration << std::endl;
+        file << "," << pointArray[i].x << "," << pointArray[i].y << "," <<   pointArray[i].iteration << std::endl;
     }
 
     // Output results
@@ -126,6 +177,7 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
 {
     struct Point *dev_points = 0;
     int* dev_iterations = 0;
+    int* dev_params = 0;
     cudaError_t cudaStatus;
 
     // Choose which GPU to run on, change this on a multi-GPU system.
@@ -145,6 +197,17 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
     cudaStatus = cudaMalloc((void**)&dev_iterations, numThreads * numBlocks * sizeof(int));
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMalloc failed!");
+    }
+
+    cudaStatus = cudaMalloc((void**)&dev_params, sizeof(int));
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMalloc failed!");
+    }
+
+    cudaStatus = cudaMemcpy(dev_params, &X, sizeof(const int), cudaMemcpyHostToDevice);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMemcpy failed!");
+        goto Error;
     }
 
     // Launch a kernel on the GPU with 16 threads for each element.
