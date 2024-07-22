@@ -17,3 +17,4 @@
 **/*.exp
 **/*.lib
 **/*.txt
+/mandelParallel/mandelParallel.sln
