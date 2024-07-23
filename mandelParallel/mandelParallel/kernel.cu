@@ -26,10 +26,6 @@ constexpr int Y = 1080;
 __device__ int xParam = X;
 __device__ int yParam = Y;
 
-__device__ co
-nstexpint blockDims(blockX, blockY);
-__device__ dim3 threadDims(threadX, threadY);
-
 
 struct Point {
     int x;
