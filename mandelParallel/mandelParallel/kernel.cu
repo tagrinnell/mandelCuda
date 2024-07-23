@@ -42,39 +42,12 @@ struct Point {
 cudaError_t mandelBrotCalc(struct Point* pointArray, int* numIterations, unsigned long size);
 
 __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {   
-    /*int iterations = 0;
+    /*
+    int glob_tid_x = blockIdx.x * threadX + threadIdx.x;
+    int glob_tid_y = blockIdx.y * threadY + threadIdx.y;
 
-    int xStart = 0;
-    int yStart = 0;
-
-    int xEnd = 0;
-    int yEnd = 0;
-
-    if (threadIdx.x == 0) 
-    {
-        xStart = 0;
-    }
-    else {
-
-    }
-
-    if (threadIdx.y == 0) 
-    {
-        yStart = 0;
-    }
-    else
-    {
-
-    }
-
-    if (threadIdx.x * threadIdx.y == *numThreads) 
-    {
-        xEnd = *X;
-        yEnd = *Y;
-    }
-    else {
-        xEnd = 
-    }*/
+    // Next scale the start and end of of the thread by the Id value
+    */
 
     int block_xStart = xParam * ((double) blockIdx.x / blockDims.x);
     int block_yStart = yParam * ((double) blockIdx.y / blockDims.y);
