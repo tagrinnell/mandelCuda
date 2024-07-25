@@ -72,7 +72,7 @@ dim3 nthreads(16, 4);
 1d blocks, with 1d threads
 int tid = threadIdx.x + blockDim.x * blockIdx.x;
 
-
+### Syncing threads and Clusters of Grids
 
 
 
