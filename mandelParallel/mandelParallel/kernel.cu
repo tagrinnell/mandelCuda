@@ -15,19 +15,11 @@
 #define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
 #endif
 
-
-#define threadX 18
-#define threadY 9
-#define blockX 6
-#define blockY 6
-
-
 constexpr int X = 1920;
 constexpr int Y = 1080;
 
 __device__ int xParam = X;
 __device__ int yParam = Y;
-
 
 struct Point {
     int x;
@@ -40,8 +32,9 @@ struct Point {
 cudaError_t mandelBrotCalc(struct Point* pointArray, int* numIterations, unsigned long size);
 
 __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {   
+
     // Calculates Strides by finding the area a block is supposed to work on and add an offset based on the thread ID.
-    //                              BLOCK STRIDE                       THREAD OFFSET
+    //                              BEGINNING OF BLOCK                 THREAD OFFSET
     int block_xStart    = xParam * ((double) blockIdx.x / gridDim.x) + xParam * threadIdx.x / blockDim.x / gridDim.x;
     int block_xEnd      = xParam * ((double) blockIdx.x / gridDim.x) + xParam * (threadIdx.x + 1) / blockDim.x / gridDim.x;
 
@@ -52,9 +45,9 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
             printf("Block %d, %d\tThread: %d, %d\tStride: %d->%d; %d->%d\n", blockIdx.x, blockIdx.y, threadIdx.x, threadIdx.y, block_xStart, block_xEnd, block_yStart, block_yEnd);
     }
 
-    for (int i = xStart; i < xParam; i++) 
+    for (int i = block_xStart; i < block_xEnd; i++)
     {
-        for (int j = yStart; j < yParam; j++)
+        for (int j = block_yStart; j < block_yEnd; j++)
         {
 
             float x0 = i / (xParam * 2.47) - 2;
@@ -76,13 +69,11 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
 
             struct Point newPoint = { i, j, iteration, 0, 0 };
 
-            returnPointArr[(xParam / i) + (yParam % j)] = newPoint;
+            returnPointArr[i * yParam + j] = newPoint;
 
-            numIterations[i + j] = iterations;
         }
 
     }
-    */
 }
 
 /*
@@ -158,7 +149,6 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
 {
     struct Point *dev_points = 0;
     int* dev_iterations = 0;
-    int* dev_params = 0;
 
     dim3 nthreads(16, 9);
     dim3 nblocks(6, 6);
@@ -184,17 +174,6 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
         fprintf(stderr, "cudaMalloc failed!");
     }
 
-    cudaStatus = cudaMalloc((void**)&dev_params, sizeof(int));
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMalloc failed!");
-    }
-
-    cudaStatus = cudaMemcpy(dev_params, &X, sizeof(const int), cudaMemcpyHostToDevice);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy failed!");
-        goto Error;
-    }
-
     // Launch a kernel on the GPU with 16 threads for each element.
     // Num blocks, numThreads
     /*
@@ -208,10 +187,6 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
     // Use Grid Dim to define grid paramters
     // In kernel, use the block Id and the x, y thread indices to find which section of the 
     // Array the thread should run over
-
-
-    
-
 
     computeSet CUDA_KERNEL (nblocks, nthreads)  (dev_points, dev_iterations);
 
