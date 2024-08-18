@@ -15,10 +15,12 @@
 #define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
 #endif
 
+
 #define threadX 18
 #define threadY 9
 #define blockX 6
 #define blockY 6
+
 
 constexpr int X = 1920;
 constexpr int Y = 1080;
@@ -38,20 +40,18 @@ struct Point {
 cudaError_t mandelBrotCalc(struct Point* pointArray, int* numIterations, unsigned long size);
 
 __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {   
-    /*
-    int glob_tid_x = blockIdx.x * threadX + threadIdx.x;
-    int glob_tid_y = blockIdx.y * threadY + threadIdx.y;
+    // Calculates Strides by finding the area a block is supposed to work on and add an offset based on the thread ID.
+    //                              BLOCK STRIDE                       THREAD OFFSET
+    int block_xStart    = xParam * ((double) blockIdx.x / gridDim.x) + xParam * threadIdx.x / blockDim.x / gridDim.x;
+    int block_xEnd      = xParam * ((double) blockIdx.x / gridDim.x) + xParam * (threadIdx.x + 1) / blockDim.x / gridDim.x;
 
-    // Next scale the start and end of of the thread by the Id value
-    */
+    int block_yStart    = yParam * ((double) blockIdx.y / gridDim.y) + yParam * threadIdx.y / blockDim.y / gridDim.y;
+    int block_yEnd      = yParam * ((double) blockIdx.y / gridDim.y) + yParam * (threadIdx.y + 1) / blockDim.y / gridDim.y;
+    
+    if (blockIdx.x == 5 && blockIdx.y == 5) {
+            printf("Block %d, %d\tThread: %d, %d\tStride: %d->%d; %d->%d\n", blockIdx.x, blockIdx.y, threadIdx.x, threadIdx.y, block_xStart, block_xEnd, block_yStart, block_yEnd);
+    }
 
-    int block_xStart = xParam * ((double) blockIdx.x / blockDims.x);
-    int block_yStart = yParam * ((double) blockIdx.y / blockDims.y);
-    int block_xEnd = xParam * (((double) blockIdx.x + 1) / blockDims.x);
-    int block_yEnd = yParam * (((double) blockIdx.y + 1) / blockDims.y);
-
-    printf("Block %d, %d\tThread: %d, %d\tStride: %d->%d; %d->%d\n", blockIdx.x, blockIdx.y, threadIdx.x, threadIdx.y, block_xStart, block_xEnd, block_yStart, block_yEnd);
-     /*
     for (int i = xStart; i < xParam; i++) 
     {
         for (int j = yStart; j < yParam; j++)

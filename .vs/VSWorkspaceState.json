@@ -1,9 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\mandelParallel",
-    "\\mandelParallel\\mandelParallel"
+    ""
   ],
-  "SelectedNode": "\\mandelParallel\\mandelParallel\\kernel.cu",
   "PreviewInSolutionExplorer": false
 }
