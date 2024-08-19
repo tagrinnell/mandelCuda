@@ -1,2 +1,0 @@
-2075520 Iterations in 53.9376ms using params:
- X = 960, Y = 540

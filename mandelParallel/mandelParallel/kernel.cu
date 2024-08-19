@@ -1,5 +1,4 @@
-﻿
-#include "cuda_runtime.h"
+﻿#include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
 #include <stdio.h>
@@ -44,7 +43,7 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
     if (blockIdx.x == 5 && blockIdx.y == 5) {
             printf("Block %d, %d\tThread: %d, %d\tStride: %d->%d; %d->%d\n", blockIdx.x, blockIdx.y, threadIdx.x, threadIdx.y, block_xStart, block_xEnd, block_yStart, block_yEnd);
     }
-
+    /*
     for (int i = block_xStart; i < block_xEnd; i++)
     {
         for (int j = block_yStart; j < block_yEnd; j++)
@@ -73,7 +72,7 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
 
         }
 
-    }
+    }*/
 }
 
 /*
@@ -113,7 +112,6 @@ int main()
     
     // For Desktop
     std::ofstream file("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs\\MandelSetOut_Parallel.csv");
-    
 
     // For Laptop
     // std::ofstream file("C:\\Users\\Devil\\Desktop\\Random Docs\\CudaProgramming\\mandelCuda\\CSVOutputs\\mandelParallel.csv");
@@ -122,7 +120,7 @@ int main()
 
     for (int i = 0; i < X * Y; i++) {
         if (i == 0) {
-            file << pointArray[i].x << "," << pointArray[i].y << "," << pointArray[i].iteration
+            file << pointArray[i].x << "," << pointArray[i].y << "," << pointArray[i].iteration << ","
                 << X << ","
                 << Y << "," << std::endl;
         }

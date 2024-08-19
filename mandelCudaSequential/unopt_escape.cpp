@@ -89,8 +89,8 @@ int main () {
 **/
 void unoptimized_Escape(std::vector<struct Point> *set) {
 
-    for (int i = 0; i < X; i += .5) {
-        for (int j = 0; j < Y; j += .5) {
+    for (int i = 0; i < X; i++) {
+        for (int j = 0; j < Y; j++) {
 
             float x0 = i / (double) X * 2.47 - 2;
             float y0 = j / (double) Y * 2.24- 1.12;
