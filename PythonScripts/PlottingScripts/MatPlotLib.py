@@ -10,7 +10,7 @@ import pandas
 
 def main() :
 
-    csv = pandas.read_csv("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\mandelCudaSequential\\MandelSetOut.csv")
+    csv = pandas.read_csv("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs\\MandelSetOut_Parallel.csv")
 
     # fig, ax = plt.subplots()
 

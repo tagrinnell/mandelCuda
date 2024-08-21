@@ -7,8 +7,6 @@
 #include <fstream>
 #include <chrono>
 
-// Testing 
-
 #ifdef __INTELLISENSE__
 #define CUDA_KERNEL(...)
 #else
@@ -29,9 +27,9 @@ struct Point {
     int sizeY;
 };
 
-cudaError_t mandelBrotCalc(struct Point* pointArray, int* numIterations, unsigned long size);
+cudaError_t mandelBrotCalc(struct Point* pointArray, unsigned long size);
 
-__global__ void computeSet(struct Point* returnPointArr, int* numIterations) {   
+__global__ void computeSet(struct Point* returnPointArr) {   
 
     // Calculates Strides by finding the area a block is supposed to work on and add an offset based on the thread ID.
     //                              BEGINNING OF BLOCK                 THREAD OFFSET
@@ -41,17 +39,14 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
     int block_yStart    = yParam * ((double) blockIdx.y / gridDim.y) + yParam * threadIdx.y / blockDim.y / gridDim.y;
     int block_yEnd      = yParam * ((double) blockIdx.y / gridDim.y) + yParam * (threadIdx.y + 1) / blockDim.y / gridDim.y;
     
-    if (blockIdx.x == 5 && blockIdx.y == 5) {
-            printf("Block %d, %d\tThread: %d, %d\tStride: %d->%d; %d->%d\n", blockIdx.x, blockIdx.y, threadIdx.x, threadIdx.y, block_xStart, block_xEnd, block_yStart, block_yEnd);
-    }
-    /*
+    // Unoptimized escape algorithm
     for (int i = block_xStart; i < block_xEnd; i++)
     {
         for (int j = block_yStart; j < block_yEnd; j++)
         {
 
-            float x0 = i / (xParam * 2.47) - 2;
-            float y0 = j / (yParam * 2.24) - 1.12;
+            float x0 = i / (double) xParam * 2.47 - 2;
+            float y0 = j / (double) yParam * 2.24 - 1.12;
             float x = 0.0;
             float y = 0.0;
 
@@ -73,7 +68,7 @@ __global__ void computeSet(struct Point* returnPointArr, int* numIterations) {
 
         }
 
-    }*/
+    }
 }
 
 /*
@@ -97,13 +92,11 @@ int main()
     std::cout.setf(std::ios_base::unitbuf);
 
     struct Point *pointArray = new struct Point[X * Y];
-    
-    int* numIterations = new int[X * Y];
 
     std::cout << "Beginning Calculation" << std::endl;
 
     // Add vectors in parallel.
-    cudaError_t cudaStatus = mandelBrotCalc(pointArray, numIterations, (unsigned long) X * Y );
+    cudaError_t cudaStatus = mandelBrotCalc(pointArray, (unsigned long) X * Y );
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "mandelBrotCalc failed!");
         return 1;
@@ -122,11 +115,11 @@ int main()
     for (int i = 0; i < X * Y; i++) {
         if (i == 0) {
             file << pointArray[i].x << "," << pointArray[i].y << "," << pointArray[i].iteration << ","
-                << X << ","
-                << Y << "," << std::endl;
+                << X << "," << Y
+                << std::endl;
         }
 
-        file << "," << pointArray[i].x << "," << pointArray[i].y << "," <<   pointArray[i].iteration << std::endl;
+        file << pointArray[i].x << "," << pointArray[i].y << "," << pointArray[i].iteration << ",0,0" << std::endl;
     }
 
     // Output results
@@ -144,10 +137,9 @@ int main()
 }
 
 // Helper function for using CUDA to calculate mandelBrot set in parallel.
-cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsigned long size)
+cudaError_t mandelBrotCalc (struct Point* pointArray, unsigned long size)
 {
     struct Point *dev_points = 0;
-    int* dev_iterations = 0;
 
     dim3 nthreads(16, 9);
     dim3 nblocks(6, 6);
@@ -168,11 +160,6 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
         goto Error;
     }
 
-    cudaStatus = cudaMalloc((void**)&dev_iterations, X * Y * sizeof(int));
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMalloc failed!");
-    }
-
     // Launch a kernel on the GPU with 16 threads for each element.
     // Num blocks, numThreads
     /*
@@ -187,12 +174,12 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
     // In kernel, use the block Id and the x, y thread indices to find which section of the 
     // Array the thread should run over
 
-    computeSet CUDA_KERNEL (nblocks, nthreads)  (dev_points, dev_iterations);
+    computeSet CUDA_KERNEL (nblocks, nthreads)  (dev_points);
 
     // Check for any errors launching the kernel
     cudaStatus = cudaGetLastError();
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
+        fprintf(stderr, "computeSet launch failed: %s\n", cudaGetErrorString(cudaStatus));
         goto Error;
     }
     
@@ -200,7 +187,7 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
     // any errors encountered during the launch.
     cudaStatus = cudaDeviceSynchronize();
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
+        fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching computeSet!\n", cudaStatus);
         goto Error;
     }
 
@@ -208,12 +195,6 @@ cudaError_t mandelBrotCalc (struct Point* pointArray, int* numIterations, unsign
     cudaStatus = cudaMemcpy(pointArray, dev_points, X * Y * sizeof(struct Point), cudaMemcpyDeviceToHost);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy points failed!");
-        goto Error;
-    }
-
-    cudaStatus = cudaMemcpy(numIterations, dev_iterations, X * Y * sizeof(int), cudaMemcpyDeviceToHost);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy iterations failed!");
         goto Error;
     }
 
