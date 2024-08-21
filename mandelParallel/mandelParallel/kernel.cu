@@ -7,7 +7,7 @@
 #include <fstream>
 #include <chrono>
 
-// Testing commit
+// Testing 
 
 #ifdef __INTELLISENSE__
 #define CUDA_KERNEL(...)
