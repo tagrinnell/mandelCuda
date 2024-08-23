@@ -105,10 +105,10 @@ int main()
     std::cout << "Ending Calculation successfully, Beginning file output" << std::endl;
     
     // For Desktop
-    std::ofstream file("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs\\MandelSetOut_Parallel.csv");
+    // std::ofstream file("C:\\Users\\tasma\\Desktop\\Textbooks\\mandelCuda\\CSVOutputs\\MandelSetOut_Parallel.csv");
 
     // For Laptop
-    // std::ofstream file("C:\\Users\\Devil\\Desktop\\Random Docs\\CudaProgramming\\mandelCuda\\CSVOutputs\\mandelParallel.csv");
+    std::ofstream file("C:\\Users\\Devil\\Desktop\\Random Docs\\CudaProgramming\\mandelCuda\\CSVOutputs\\MandelSetOut_Parallel.csv");
 
     file << "X,Y,Iteration,sizeX,sizeY" << std::endl;
 
